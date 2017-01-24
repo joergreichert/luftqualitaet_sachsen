@@ -2,7 +2,7 @@ FROM debian:jessie
 ENV PG_VERSION 9.4
 RUN apt-get update && apt-get install -y --no-install-recommends cython daemontools npm nodejs-legacy postgresql-client postgresql python-pip python-dev python-virtualenv virtualenvwrapper libpq-dev git make gcc
 
-EXPOSE 8000
+EXPOSE 8000:8000
 
 ENV USER_NAME vagrant
 RUN useradd -ms /bin/bash $USER_NAME
