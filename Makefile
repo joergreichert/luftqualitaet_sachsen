@@ -40,11 +40,11 @@ help:
 
 install:
 	pip install -U --no-deps -r requirements/prod.txt
-	bower install
+	bower install --allow-root
 
 install-dev:
 	pip install -U --no-deps -r requirements/dev.txt
-	bower install
+	bower install --allow-root
 
 install-test:
 	pip install -U --no-deps -r requirements/test.txt

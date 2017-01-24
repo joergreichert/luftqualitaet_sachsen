@@ -30,9 +30,13 @@ RUN mkdir -p $VIRTUALENV
 ENV WORKON_HOME $VIRTUALENV
 RUN echo "WORKON_HOME=$VIRTUALENV" >> $HOME/.bashrc
 USER root
-RUN service postgresql start
-RUN /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv luftverschmutzung_sachsen && cd $APP_DIR && npm config set prefix '~/.npm-packages' && echo export PATH="$PATH:$HOME/.npm-packages/bin" >> ./.bashrc && source ./.bashrc && npm install -g bower && make install-dev && make create-db"
 
-#ADD ./docker-entrypoint.sh /
-#ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["/bin/bash"]
+RUN  /bin/bash -c "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv luftverschmutzung_sachsen && cd $APP_DIR && npm config set prefix '~/.npm-packages' && echo export PATH="$PATH:$HOME/.npm-packages/bin" >> ./.bashrc && source ./.bashrc && npm install -g bower && make install-dev"
+
+USER postgres
+
+RUN service postgresql start && make create-db && make migrate
+
+USER root
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
